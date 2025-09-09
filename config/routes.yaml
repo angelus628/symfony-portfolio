@@ -7,3 +7,7 @@ controllers:
 blog_list:
     path: /blog
     controller: App\Controller\BlogController::list
+
+home:
+    path: /
+    controller: App\Controller\ConferenceController::index

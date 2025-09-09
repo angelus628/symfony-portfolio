@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'homepage', stateless: true)]
+    #[Route('/blog_list', name: 'homepage', stateless: true)]
     public function homepage(): Response
     {
         $this->generateUrl('blog_list');
