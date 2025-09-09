@@ -22,7 +22,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	file \
 	gettext \
 	git \
-	&& rm -rf /var/lib/apt/lists/*
+	curl \
+	librabbitmq-dev \
+	libpq-dev \
+	libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libxslt1-dev
+
+# Install symfony CLI
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && \
+	apt-get install symfony-cli
 
 RUN set -eux; \
 	install-php-extensions \
@@ -31,7 +41,16 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+		pdo_pgsql\
 	;
+
+RUN pecl install amqp redis
+RUN docker-php-ext-enable \
+	amqp \
+	redis
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd xsl
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
